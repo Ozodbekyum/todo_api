@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:todo_api/services/todoAPI.dart';
 import 'package:todo_api/models/todo.dart';
 
@@ -33,6 +34,11 @@ class _TodoAPPState extends State<TodoAPP> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     return ListTile(
+                      onTap: () {
+                        setState(() {
+                          deleteTask(snapshot.data![index].id);
+                        });
+                      },
                       title: Text(snapshot.data![index].title),
                       subtitle: Text(snapshot.data![index].description),
                       trailing:
@@ -49,11 +55,14 @@ class _TodoAPPState extends State<TodoAPP> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            addTask(Todo(
-              title: 'Test',
-              description: 'Test',
-              completed: false,
-            ));
+            setState(() {
+              addTask(Todo(
+                title: 'Test',
+                description: 'Test',
+                completed: false,
+                id: 1,
+              ));
+            });
           },
           child: const Icon(Icons.add),
         ));
